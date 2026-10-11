@@ -1,0 +1,451 @@
+Build a polished, interactive web application called **EraseFlow**. This is a hackathon proof of concept (POC), and we have approximately one hour to build it.
+
+**Your priority is to create a working, visually impressive demonstration of the entire workflow. Do not overengineer this or build a production-ready compliance platform.**
+
+Build the application directly in the current Replit project. Do not just explain the implementation. Create the files, run the application, test it, and fix any errors.
+
+# 1. THE PROBLEM
+
+Companies receive requests from people who want their personal data deleted under GDPR.
+
+However, personal information is scattered across different systems, such as Slack and Salesforce. Compliance teams must manually find the information, determine what can be deleted, execute the necessary actions, and verify the results.
+
+EraseFlow demonstrates how this workflow could be automated.
+
+Our product workflow is:
+
+**REQUEST → DISCOVER → CLASSIFY → REVIEW → EXECUTE → VERIFY → CERTIFICATE**
+
+# 2. TECHNICAL REQUIREMENTS
+
+Build a web application that runs entirely within Replit.
+
+Preferred stack:
+- React
+- TypeScript
+- Tailwind CSS
+- Lucide icons
+- Local browser state for persistence
+
+Use the existing Replit template if one is already configured. Do not waste time replacing a working project setup.
+
+Requirements:
+- No paid APIs
+- No API keys
+- No OpenAI API calls
+- No real Slack or Salesforce integrations
+- No paid database
+- No authentication
+- Use synthetic data to simulate enterprise systems
+
+The application must be interactive. Every primary button must work.
+
+# 3. DESIGN — MAKE IT LOOK LIKE A REAL SAAS PRODUCT
+
+Create a professional enterprise compliance dashboard inspired by modern products such as Linear, Vercel, and Stripe.
+
+Design direction:
+- Clean, minimal interface
+- White and light-gray backgrounds
+- Dark navy typography
+- Blue primary actions
+- Green success states
+- Amber warnings
+- Red error states
+- Subtle borders and shadows
+- Rounded cards
+- Consistent spacing
+- Professional typography
+- Lucide icons
+- Smooth, subtle transitions
+
+Avoid:
+- Excessive gradients
+- Oversized headings
+- Cartoonish illustrations
+- Generic AI chatbot layouts
+- Unnecessary animations
+
+The result should look like an early-stage enterprise startup with a credible product.
+
+## Application layout
+
+Create a sidebar containing:
+- EraseFlow logo and name
+- Overview
+- Requests
+- Data Discovery
+- Review Queue
+- Audit Reports
+- A small "DEMO ENVIRONMENT" badge
+
+Create a main dashboard with a top navigation bar and page content.
+
+Use a clear visual hierarchy and realistic sample data.
+
+# 4. DASHBOARD
+
+The initial screen should show:
+
+**EraseFlow**
+"Find it. Resolve it. Verify it."
+
+Subtitle:
+"Automate personal data erasure across disconnected systems."
+
+Include a prominent button:
+
+**+ New Erasure Request**
+
+Below it, show four metric cards:
+- Records discovered
+- Records deleted
+- Records redacted
+- Unresolved records
+
+Include a workflow progress indicator:
+
+1. Request
+2. Discover
+3. Review
+4. Execute
+5. Verify
+
+Add a "Recent Requests" table with:
+- Request ID
+- Subject
+- Date submitted
+- Records found
+- Status
+
+Populate it with synthetic examples, but clearly label them as demo data.
+
+# 5. REQUEST CREATION
+
+When the user clicks "New Erasure Request," open a form or modal.
+
+Prepopulate it with:
+
+Name: Sarah Chen
+Email: sarah@example.com
+Phone: 415-555-0123
+Aliases: Sally
+
+Include a request submission date.
+
+Add a primary button:
+
+**Start Discovery**
+
+When clicked:
+- Create a unique request ID.
+- Store the request in application state.
+- Navigate to the discovery screen.
+- Show the request details and current workflow status.
+
+Assume identity verification has already occurred for the demo.
+
+Display an indicative one-month response deadline. Do not represent this as a definitive legal deadline calculation.
+
+# 6. SYNTHETIC CONNECTORS
+
+Simulate two connected systems:
+
+1. Salesforce
+2. Slack
+
+Show both as connected using badges.
+
+Create approximately eight synthetic records across these systems.
+
+Include examples such as:
+
+RECORD 1 — SALESFORCE
+Type: Contact
+Content: Sarah Chen, sarah@example.com, 415-555-0123
+Expected action: DELETE
+
+RECORD 2 — SALESFORCE
+Type: Opportunity Notes
+Content: "Spoke with Sarah Chen about the renewal opportunity."
+Expected action: REVIEW or REDACT, depending on the surrounding context.
+
+RECORD 3 — SALESFORCE
+Type: Financial Transaction
+Content: "Payment received from Sarah Chen, reference TX-1048."
+Expected action: RETAIN_REVIEW
+
+RECORD 4 — SLACK
+Type: Message
+Content: "Sarah Chen asked us to remove her account details."
+Expected action: REDACT
+
+RECORD 5 — SLACK
+Type: Message
+Content: "Sally will join the project call tomorrow."
+Expected action: MANUAL_REVIEW because the nickname match is ambiguous.
+
+RECORD 6 — SLACK
+Type: Message
+Content: "Contact Sarah at sarah@example.com for the account closure."
+Expected action: REDACT
+
+RECORD 7 — SALESFORCE
+Type: Contact
+Content: "John Smith, john@example.com."
+Expected action: No match. This record must remain untouched.
+
+RECORD 8 — SLACK
+Type: Message
+Content: "The engineering team completed its sprint review."
+Expected action: No match. This record must remain untouched.
+
+Give each record:
+- A unique ID
+- Platform
+- Record type
+- Content
+- Creation date
+- Match evidence
+- Suggested action
+
+# 7. DATA DISCOVERY
+
+When the user clicks "Scan Connected Systems," search both synthetic datasets.
+
+Implement simple deterministic matching using:
+- Email
+- Phone
+- Full name
+- Known aliases
+
+Show a short loading animation or progress indicator during discovery.
+
+Display a summary:
+- Platforms searched
+- Records scanned
+- Potential matches
+- Exact matches
+- Ambiguous matches
+
+Display the discovered records in a professional table.
+
+Columns:
+- Platform
+- Record type
+- Matched identifier
+- Content preview
+- Recommended action
+- Confidence
+- Status
+
+Use badges for actions:
+- DELETE
+- REDACT
+- RETAIN REVIEW
+- MANUAL REVIEW
+
+Clicking a row should open a details panel showing the complete synthetic record and the reason it matched.
+
+Do not treat a nickname or common-name match as definitive proof of identity.
+
+# 8. CLASSIFICATION
+
+Each discovered record should receive one of four proposed actions.
+
+### DELETE
+The record primarily belongs to the requester.
+
+### REDACT
+The record contains the requester's personal information but also contains information about other people that should be preserved where appropriate.
+
+### RETAIN REVIEW
+The record may be subject to a legal or regulatory retention requirement. A human must determine whether retention is justified.
+
+### MANUAL REVIEW
+The match or record ownership is ambiguous.
+
+For every recommendation, display:
+- Recommended action
+- Short explanation
+- Match evidence
+- Confidence indicator
+
+Use deterministic rules for this POC. No external AI is required.
+
+Do not claim that the application independently determines legal retention obligations.
+
+# 9. HUMAN REVIEW QUEUE
+
+Create a dedicated Review Queue page.
+
+Show each discovered record as a row or card.
+
+For each record, allow the reviewer to:
+- Approve the recommended action
+- Change the proposed action
+- Reject the recommendation
+- Add a short justification
+
+Use action options:
+- DELETE
+- REDACT
+- RETAIN
+- MANUAL REVIEW
+- REJECT
+
+Display a clear approval status.
+
+Provide a primary button:
+
+**Execute Approved Actions**
+
+Do not modify records before the user approves the proposed action.
+
+Records classified as RETAIN REVIEW must have a documented justification before being treated as resolved.
+
+MANUAL REVIEW records cannot be silently marked complete.
+
+# 10. EXECUTION
+
+When the user clicks "Execute Approved Actions," execute the approved actions against the synthetic datasets.
+
+### DELETE
+Remove the record from the active dataset.
+
+### REDACT
+Replace the requester's identifying information with "[REDACTED]" while preserving unrelated content.
+
+### RETAIN
+Leave the record intact and store the reviewer's documented retention justification.
+
+### MANUAL REVIEW
+Leave the record unchanged and mark it unresolved.
+
+### REJECT
+Do not execute the proposed action. Require a documented reason and keep the disposition visible for further handling.
+
+Display a summary of successful actions and any failures.
+
+Use a confirmation dialog before executing actions.
+
+All modifications should be reversible through a Reset Demo button.
+
+# 11. VERIFICATION
+
+After execution, show a dedicated verification page.
+
+Include a button:
+
+**Verify Results**
+
+When clicked, rerun discovery against the modified active datasets.
+
+Display:
+- Successfully deleted records
+- Successfully redacted records
+- Records retained with justification
+- Records still requiring review
+- Failed actions
+- New or reappearing matches
+
+Show one of two prominent statuses.
+
+### COMPLETE
+Every discovered record has a documented disposition, all required actions succeeded, and verification found no unresolved actionable matches.
+
+### INCOMPLETE
+Some records remain unresolved, an action failed, or a previously deleted record reappeared.
+
+Zero search hits alone must not automatically establish legal compliance.
+
+## Bonus feature — only if time remains
+
+Add a button:
+
+**Simulate CRM Sync**
+
+When clicked, restore one previously deleted synthetic Salesforce record.
+
+When the user reruns verification, EraseFlow should detect the reappearing record and flag the request as INCOMPLETE.
+
+This should be a deterministic demo scenario.
+
+# 12. AUDIT REPORT
+
+Create an Audit Reports page.
+
+Generate a downloadable JSON report containing:
+- Request ID
+- Request submission date
+- Systems searched
+- Number of records discovered
+- Record IDs
+- Match evidence
+- Recommended actions
+- Reviewer decisions
+- Execution results
+- Verification results
+- Outstanding issues
+- Event timestamps
+
+Avoid storing unnecessary personal data in the report.
+
+Add a button:
+
+**Download Erasure Processing Report**
+
+Do not call the report a certificate guaranteeing GDPR compliance.
+
+# 13. STATE MANAGEMENT
+
+Use React state and localStorage to preserve:
+- Current request
+- Synthetic records
+- Discovery results
+- Reviewer decisions
+- Execution history
+- Verification status
+- Audit events
+
+The application should continue working when the user navigates between pages or refreshes the browser.
+
+Add a Reset Demo button that restores the initial synthetic records and clears the demo workflow.
+
+# 14. FINAL TESTING
+
+Before finishing, confirm that:
+
+1. The application starts successfully.
+2. A new request can be created.
+3. Discovery finds records across both platforms.
+4. Unrelated records are not modified.
+5. Different records receive different recommendations.
+6. The reviewer can approve or change actions.
+7. Approved actions modify the synthetic datasets.
+8. Verification reflects the resulting data.
+9. The audit report downloads successfully.
+10. Reset Demo restores the original state.
+
+Fix any broken interactions.
+
+# 15. TIME CONSTRAINT
+
+We have approximately one hour.
+
+Build in this order:
+
+1. Working dashboard and navigation.
+2. Request creation.
+3. Synthetic discovery.
+4. Classification and human review.
+5. Execution.
+6. Verification.
+7. Audit report.
+8. Visual polish.
+
+Do not spend time implementing real integrations, user authentication, a backend server, or sophisticated AI.
+
+If you need to simplify anything, simplify the architecture, not the core user experience.
+
+**The goal is a compelling, working POC that demonstrates the complete workflow in a two-minute live demo. Start building immediately.**
